@@ -38,6 +38,17 @@
     --ring: 43 55% 54%;
 
     --radius: 1.25rem;
+
+    /* 消えてしまったパーツ（ヘッダーや選択部分など）にゴールドとクリームの色を補う設定 */
+    --theme-base: #dcab3d;
+    --theme-base-rgb: 220, 171, 61;
+    --theme-color: #dcab3d;
+    --theme-gradient-start: #f3c861;
+    --theme-gradient-end: #c49427;
+    --theme-light: #f0e4cd;
+    --theme-light-rgb: 240, 228, 205;
+    --theme-border: rgba(232, 222, 197, 0.8);
+    --theme-shadow-color: rgba(220, 171, 61, 0.12);
   }
 }
 
@@ -97,13 +108,38 @@
   .mini-badge {
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(220, 171, 61, 0.12);
-    border: 1px solid rgba(232, 222, 197, 0.8);
+    box-shadow: 0 2px 8px var(--theme-shadow-color);
+    border: 1px solid var(--theme-border);
   }
 
   input::placeholder,
   textarea::placeholder {
     font-weight: normal !important;
+  }
+
+  /* 選択時のハイライトとフォーカス色を新しいゴールドに設定 */
+  input:focus,
+  input:focus-visible,
+  select:focus,
+  select:focus-visible,
+  textarea:focus,
+  textarea:focus-visible,
+  [role="combobox"]:focus,
+  [role="combobox"]:focus-visible {
+    outline: none !important;
+    border-color: var(--theme-color) !important;
+    box-shadow: 0 0 0 3px var(--theme-border) !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
+  }
+
+  [role="option"][data-highlighted] {
+    background-color: rgba(var(--theme-base-rgb), 0.12) !important;
+    color: var(--theme-color) !important;
+  }
+
+  [role="option"][data-state="checked"] {
+    color: var(--theme-color) !important;
   }
 }
 
@@ -124,8 +160,7 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     box-shadow:
-      0 6px 20px rgba(220, 171, 61, 0.3),
-      0 2px 8px rgba(181, 141, 47, 0.2),
+      0 6px 20px var(--theme-shadow-color),
       inset 0 1px 0 rgba(255, 255, 255, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
@@ -137,7 +172,7 @@
   .frost-card {
     background: #ffffff;
     border-radius: 24px;
-    box-shadow: 0 8px 24px rgba(220, 171, 61, 0.08), 0 2px 8px rgba(61, 50, 41, 0.03);
-    border: 1px solid rgba(232, 222, 197, 0.8);
+    box-shadow: 0 8px 24px var(--theme-shadow-color), 0 2px 8px rgba(61, 50, 41, 0.03);
+    border: 1px solid var(--theme-border);
   }
 }
