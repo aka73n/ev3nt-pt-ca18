@@ -865,7 +865,7 @@ const Index = () => {
             setCurrentDayStr(String(result.currentDay));
             setCurrentHourStr(String(result.currentHour));
             window.localStorage.setItem("lastHourlyUpdateKey", currentHourKey);
-            toast.success(`自動進捗更新: ${result.currentDay}日目 ${result.currentHour}時`);
+            toast.success(`進捗更新: ${result.currentDay}日目 ${result.currentHour}時`);
           }
         }
       } catch { /* */ }
