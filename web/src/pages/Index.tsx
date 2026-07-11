@@ -1611,7 +1611,7 @@ const Index = () => {
 
             {/* 切符リアルタイム見積もり */}
             {ticketEstimate !== null && ticketEstimate > 0 && (
-              <div className="mt-3 rounded-xl p-3" style={{ border: `1px solid ${C.primaryLight}40`, backgroundColor: "rgba(var(--theme-base-rgb), 0.06)" }}>
+              <div className="mt-3 rounded-xl p-3" <div className="mt-3 rounded-xl p-3" style={{ border: "1px solid rgba(220, 171, 61, 0.3)", backgroundColor: "rgba(220, 171, 61, 0.06)" }}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
                     <Ticket className="h-3.5 w-3.5" style={{ color: C.accent }} />
