@@ -2557,7 +2557,7 @@ const RouteCard = ({ result, currentTickets }: RouteCardProps) => {
           </div>
           <CollapsiblePt formula={simpleFormula} total={totalPt} />
         </li>
-        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(var(--theme-light-rgb), 0.5)" }}>
+        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(250,246,235,0.5)" }}>
           <div className="flex items-center">
             <span className="font-bold shrink-0" style={{ color: C.muted }}>通常</span>
             <span className="ml-auto font-bold text-right whitespace-nowrap" style={{ color: C.text }}>
@@ -2566,7 +2566,7 @@ const RouteCard = ({ result, currentTickets }: RouteCardProps) => {
           </div>
           <CollapsiblePt formula={normalFormula} total={normalPt} />
         </li>
-        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(var(--theme-light-rgb), 0.5)" }}>
+        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(250,246,235,0.5)" }}>
           <div className="flex items-center">
             <span className="font-bold shrink-0" style={{ color: C.muted }}>イベント</span>
             <span className="ml-auto font-bold text-[0.65rem] text-right whitespace-nowrap overflow-hidden" style={{ color: C.text }}>
@@ -2575,7 +2575,7 @@ const RouteCard = ({ result, currentTickets }: RouteCardProps) => {
           </div>
           <CollapsiblePt formula={eventFormula} total={eventPt} />
         </li>
-        <li className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(var(--theme-light-rgb), 0.5)" }}>
+        <li className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(250,246,235,0.5)" }}>
           <span className="font-bold shrink-0" style={{ color: C.muted }}>獲得pt</span>
           <span className="ml-auto font-bold text-right whitespace-nowrap" style={{ color: C.text }}>
             {formatNumber(totalPt)} pt
