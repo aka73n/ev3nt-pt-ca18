@@ -2548,7 +2548,7 @@ const RouteCard = ({ result, currentTickets }: RouteCardProps) => {
         最短ルート
       </h4>
       <ul className="space-y-1.5 text-xs" style={{ color: C.text }}>
-        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(var(--theme-light-rgb), 0.5)" }}>
+        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(250,246,235,0.5)" }}>
           <div className="flex items-center">
             <span className="font-bold shrink-0" style={{ color: C.muted }}>消費AP/切符</span>
             <span className="ml-auto font-bold text-right" style={{ color: C.text }}>
