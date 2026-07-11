@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 18TRIP Calculator design system — themeable via CSS Custom Properties
+   Default theme: 主 (green) */
+
+@layer base {
+  :root {
+    /* 背景色と文字色 (クリーム & ダークブラウン) */
+    --background: 43 40% 92%;
+    --foreground: 30 17% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 30 17% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 17% 20%;
+
+    /* プライマリーカラー (ゴールドアクセント #dcab3d) */
+    --primary: 43 55% 54%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 30% 94%;
+    --secondary-foreground: 30 17% 20%;
+
+    --muted: 40 25% 92%;
+    --muted-foreground: 30 12% 48%;
+
+    /* 深みのあるゴールド */
+    --accent: 40 55% 42%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 30% 85%;
+    --input: 40 30% 85%;
+    --ring: 43 55% 54%;
+
+    --radius: 1.25rem;
+
+    /* Theme: 温かみのあるゴールドとクリーム色 (18TRIP風) */
+    --theme-base: #dcab3d;
+    --theme-base-rgb: 220, 171, 61;
+    --theme-color: #dcab3d;
+    --theme-gradient-start: #f3c861;
+    --theme-gradient-end: #c49427;
+    --theme-light: #f0e3ca;
+    --theme-light-rgb: 240, 227, 202;
+    --theme-border: #e3d2b7;
+    --theme-shadow-color: rgba(220, 171, 61, 0.28);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-color: #f0e3ca; /* ベースの温かみのあるクリーム色 */
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(220, 171, 61, 0.18) 0, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(220, 171, 61, 0.12) 0, transparent 45%);
+    background-attachment: fixed;
+    font-feature-settings: "palt" 1;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  /* iOS自動ズーム回避 */
+  input[type="number"],
+  input[type="text"],
+  select {
+    font-size: 16px !important;
+  }
+
+  .compact-input {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    line-height: 1.2 !important;
+  }
+
+  .form-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #8c7e6b;
+    margin-bottom: 2px;
+  }
+
+  .mini-badge {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px var(--theme-shadow-color);
+    border: 1px solid var(--theme-border);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    font-weight: normal !important;
+  }
+
+  /* Theme-linked focus styles for all form controls */
+  input:focus,
+  input:focus-visible,
+  select:focus,
+  select:focus-visible,
+  textarea:focus,
+  textarea:focus-visible,
+  [role="combobox"]:focus,
+  [role="combobox"]:focus-visible {
+    outline: none !important;
+    border-color: var(--theme-color) !important;
+    box-shadow: 0 0 0 3px var(--theme-border) !important;
+    --tw-ring-shadow: 0 0 #0000 !important;
+    --tw-ring-offset-shadow: 0 0 #0000 !important;
+  }
+
+  /* Theme-linked highlight for select dropdown items */
+  [role="option"][data-highlighted] {
+    background-color: rgba(var(--theme-base-rgb), 0.12) !important;
+    color: var(--theme-color) !important;
+  }
+
+  [role="option"][data-state="checked"] {
+    color: var(--theme-color) !important;
+  }
+}
+
+@layer utilities {
+  .safe-pt {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+  .safe-pb {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+
+  .glass-btn {
+    background: linear-gradient(
+      135deg,
+      var(--theme-gradient-start) 0%,
+      var(--theme-gradient-end) 100%
+    );
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow:
+      0 6px 20px var(--theme-shadow-color),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .glass-btn:active {
+    transform: scale(0.98);
+  }
+
+  .frost-card {
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 8px 24px var(--theme-shadow-color), 0 2px 8px rgba(61, 50, 41, 0.03);
+    border: 1px solid var(--theme-border);
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  }
+
+  .theme-swatch {
+    transition: transform 0.15s ease;
+  }
+  .theme-swatch:active {
+    transform: scale(0.9);
+  }
+}
