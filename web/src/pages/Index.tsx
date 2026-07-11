@@ -838,8 +838,50 @@ const Index = () => {
     }
     setCurrentDayStr(String(result.currentDay));
     setCurrentHourStr(String(result.currentHour));
+
+    try {
+      const now = new Date();
+      const currentHourKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}-${String(now.getHours()).padStart(2, "0")}`;
+      window.localStorage.setItem("lastHourlyUpdateKey", currentHourKey);
+    } catch { /* */ }
+
     toast.success(`進捗を更新しました: ${result.currentDay}日目 ${result.currentHour}時`);
   };
+
+  // --- アプリ起動時およびフォーカス時の自動進捗更新トリガー ---
+  useEffect(() => {
+    if (!eventStartDate) return;
+
+    const autoTriggerHourlyUpdate = () => {
+      const now = new Date();
+      const currentHourKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}-${String(now.getHours()).padStart(2, "0")}`;
+      
+      try {
+        const lastUpdateKey = window.localStorage.getItem("lastHourlyUpdateKey");
+
+        if (lastUpdateKey !== currentHourKey) {
+          const result = calcProgressFromDateStart(eventStartDate);
+          if (result) {
+            setCurrentDayStr(String(result.currentDay));
+            setCurrentHourStr(String(result.currentHour));
+            window.localStorage.setItem("lastHourlyUpdateKey", currentHourKey);
+            toast.success(`自動進捗更新: ${result.currentDay}日目 ${result.currentHour}時`);
+          }
+        }
+      } catch { /* */ }
+    };
+
+    // 起動時に少し遅延させて実行（状態復元を考慮）
+    const timer = setTimeout(autoTriggerHourlyUpdate, 150);
+
+    // ウィンドウ/タブがアクティブになった際にも検知
+    window.addEventListener("focus", autoTriggerHourlyUpdate);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("focus", autoTriggerHourlyUpdate);
+    };
+  }, [eventStartDate]);
 
   // --- 計算タブ入力保存 ---
   const handleSaveCalcInputs = () => {
@@ -1569,16 +1611,15 @@ const Index = () => {
 
             {/* 切符リアルタイム見積もり */}
             {ticketEstimate !== null && ticketEstimate > 0 && (
-              /* className の中に 「border」 を追加し、枠線のベースを強制的に作ります */
-              <div className="mt-3 rounded-xl p-3 border" style={{ borderColor: "rgba(220, 171, 61, 0.4)", backgroundColor: "rgba(220, 171, 61, 0.06)" }}>
+              <div className="mt-3 rounded-xl p-3" style={{ border: `1px solid ${C.primaryLight}40`, backgroundColor: "rgba(var(--theme-base-rgb), 0.06)" }}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
-                    <Ticket className="h-3.5 w-3.5" style={{ color: C.primary }} />
-                    <p className="text-[0.7rem] font-bold" style={{ color: C.primary }}>
+                    <Ticket className="h-3.5 w-3.5" style={{ color: C.accent }} />
+                    <p className="text-[0.7rem] font-bold" style={{ color: C.accent }}>
                       現在の所持切符{formatNumber(currentTickets)}枚→獲得pt
                     </p>
                   </div>
-                  <p className="text-base font-bold" style={{ color: C.primary }}>
+                  <p className="text-base font-bold" style={{ color: C.accent }}>
                     {formatNumber(ticketEstimate)} pt
                   </p>
                 </div>
@@ -2549,7 +2590,7 @@ const RouteCard = ({ result, currentTickets }: RouteCardProps) => {
         最短ルート
       </h4>
       <ul className="space-y-1.5 text-xs" style={{ color: C.text }}>
-        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(250,246,235,0.5)" }}>
+        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(var(--theme-light-rgb), 0.5)" }}>
           <div className="flex items-center">
             <span className="font-bold shrink-0" style={{ color: C.muted }}>消費AP/切符</span>
             <span className="ml-auto font-bold text-right" style={{ color: C.text }}>
@@ -2558,7 +2599,7 @@ const RouteCard = ({ result, currentTickets }: RouteCardProps) => {
           </div>
           <CollapsiblePt formula={simpleFormula} total={totalPt} />
         </li>
-        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(250,246,235,0.5)" }}>
+        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(var(--theme-light-rgb), 0.5)" }}>
           <div className="flex items-center">
             <span className="font-bold shrink-0" style={{ color: C.muted }}>通常</span>
             <span className="ml-auto font-bold text-right whitespace-nowrap" style={{ color: C.text }}>
@@ -2567,7 +2608,7 @@ const RouteCard = ({ result, currentTickets }: RouteCardProps) => {
           </div>
           <CollapsiblePt formula={normalFormula} total={normalPt} />
         </li>
-        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(250,246,235,0.5)" }}>
+        <li className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(var(--theme-light-rgb), 0.5)" }}>
           <div className="flex items-center">
             <span className="font-bold shrink-0" style={{ color: C.muted }}>イベント</span>
             <span className="ml-auto font-bold text-[0.65rem] text-right whitespace-nowrap overflow-hidden" style={{ color: C.text }}>
@@ -2576,7 +2617,7 @@ const RouteCard = ({ result, currentTickets }: RouteCardProps) => {
           </div>
           <CollapsiblePt formula={eventFormula} total={eventPt} />
         </li>
-        <li className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(250,246,235,0.5)" }}>
+        <li className="flex items-center gap-2 rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(var(--theme-light-rgb), 0.5)" }}>
           <span className="font-bold shrink-0" style={{ color: C.muted }}>獲得pt</span>
           <span className="ml-auto font-bold text-right whitespace-nowrap" style={{ color: C.text }}>
             {formatNumber(totalPt)} pt
