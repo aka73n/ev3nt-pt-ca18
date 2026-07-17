@@ -804,6 +804,18 @@ const Index = () => {
   const handleCalculate = () => {
     if (targetPt <= 0) { toast.error("目標ポイントを入力してください"); return; }
     if (eventDays < 1) { toast.error("開催日数を入力してください"); return; }
+
+    const useCurrentDay = currentDay >= 1 ? currentDay : 1;
+    const useCurrentHour = currentHour >= 0 && currentHour <= 23 ? currentHour : 16;
+    const isEnded = useCurrentDay > eventDays || (useCurrentDay === eventDays && useCurrentHour >= 21);
+    if (isEnded) {
+      setResult(null);
+      toast("イベントは終了しました　リセットしてください", {
+        style: { backgroundColor: "#dcab3d", color: "#ffffff", border: "none" }
+      });
+      return;
+    }
+
     runCalculation({ showToast: true, scrollToResult: true });
   };
 
@@ -836,6 +848,15 @@ const Index = () => {
       toast.error("イベント開始日を入力してください");
       return;
     }
+
+    const isEnded = result.currentDay > eventDays || (result.currentDay === eventDays && result.currentHour >= 21);
+    if (isEnded) {
+      toast("イベントは終了したため、進捗更新されません", {
+        style: { backgroundColor: "#dcab3d", color: "#ffffff", border: "none" }
+      });
+      return;
+    }
+
     setCurrentDayStr(String(result.currentDay));
     setCurrentHourStr(String(result.currentHour));
 
@@ -2128,8 +2149,9 @@ interface ProgressCardProps {
 }
 const ProgressCard = ({ currentPt, targetPt, progressPct, nextReward, currentDay, eventDays, currentHour }: ProgressCardProps) => {
   const isDefault = currentDay === 1 && currentHour === 16;
-  const isLastDay = eventDays > 0 && currentDay > 0 && currentDay >= eventDays;
-  const showDayInfo = !isDefault && currentDay > 0;
+  const isEnded = currentDay > eventDays || (currentDay === eventDays && currentHour >= 21);
+  const isLastDay = eventDays > 0 && currentDay > 0 && currentDay === eventDays && currentHour < 21;
+  const showDayInfo = !isDefault && currentDay > 0 && !isEnded;
   return (
   <div className="frost-card p-4">
     <div className="mb-3 flex items-end justify-between">
@@ -2137,8 +2159,13 @@ const ProgressCard = ({ currentPt, targetPt, progressPct, nextReward, currentDay
         <p className="flex items-center gap-2 text-[0.6rem] font-semibold tracking-[0.15em] uppercase" style={{ color: C.accent }}>
           INFORMATION
           {showDayInfo && (
-            <span className="font-bold" style={{ color: C.base }}>
+            <span className="font-bold" style={{ color: "#dcab3d" }}>
               {isLastDay ? "本日最終日" : `本日${currentDay}日目`}
+            </span>
+          )}
+          {isEnded && (
+            <span className="font-bold" style={{ color: "#dcab3d" }}>
+              イベント終了
             </span>
           )}
         </p>
